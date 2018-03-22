@@ -1,0 +1,262 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Open Sans;
+    font-size: 16px;
+    font-weight: 400;
+    color: #555;
+}
+
+/* top part */
+.top {    
+    height: 40vh;
+    background-color: rgb(189, 189, 189);
+}
+
+.budget {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    top: 50%;
+    transform: translateY(-50%);  
+}
+
+.budget__title {
+    font-size: 18px;
+    margin-bottom: 10px;
+    font-weight: 300;
+}
+
+.budget__value {
+    font-weight: 300;
+    font-size: 40px;
+    margin-bottom: 23px;
+    letter-spacing: 2px;
+}
+
+.budget__income,
+.budget__expenses {
+    display: flex;
+    justify-content: space-between;
+    width: 330px;
+    padding: 12px;
+    text-transform: uppercase;
+}
+
+.budget__income {
+    margin-bottom: 10px;
+    background-color: #28B9B5;
+}
+
+.budget__expenses {
+    background-color: #FF5049;
+}
+
+.right {
+    display: flex;
+}
+
+.budget__income--text,
+.budget__expenses--text {
+    font-size: 13px;
+    color: #444;
+    margin-top: 2px;
+}
+
+.budget__income--value,
+.budget__expenses--value {
+    letter-spacing: 1px;
+    color: #fff;
+}
+
+.budget__income--percentage,
+.budget__expenses--percentage {
+    width: 34px;
+    font-size: 11px;
+    padding: 3px 0;
+    margin-left: 10px;
+    color: #fff;
+}
+
+.budget__expenses--percentage {
+    background-color: rgba(255, 255, 255, 0.2);
+    text-align: center;
+    border-radius: 3px;
+}
+
+/* bottom part */
+.bottom {   
+    width: 100%;
+}
+
+.add__container {  
+    display: flex;
+    justify-content: center;  
+    padding: 14px;
+    border-bottom: 1px solid #e7e7e7;
+    background-color: #f7f7f7;
+}
+
+.add__type {
+    width: 55px;
+    border: 1px solid #e7e7e7;
+    height: 44px;
+    font-size: 18px;
+    color: inherit;
+    background-color: #fff;
+    margin-right: 10px;
+    font-weight: 300;
+    transition: border 0.3s;
+}
+
+.add__description,
+.add__value {
+    border: 1px solid #e7e7e7;
+    background-color: #fff;
+    color: inherit;
+    font-family: inherit;
+    font-size: 14px;
+    padding: 12px 15px;
+    margin-right: 10px;
+    border-radius: 5px;
+    transition: border 0.3s;
+}
+
+.add__description { width: 400px;}
+.add__value { width: 100px;}
+
+.add__btn {
+    font-size: 35px;
+    background: none;
+    border: none;
+    color: #28B9B5;
+    cursor: pointer;
+    line-height: 1.1;
+    margin-left: 10px;
+}
+
+.add__btn:active { transform: translateY(2px); }
+
+.add__type:focus,
+.add__description:focus,
+.add__value:focus {
+    outline: none;
+    border: 1px solid #28B9B5;
+}
+
+.container-list {
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+}
+
+.income {
+    width: 475px;
+    margin-right: 50px;
+}
+
+.expenses {
+    width: 475px;
+}
+
+h2 {
+    text-transform: uppercase;
+    font-size: 18px;
+    font-weight: 400;
+    margin-bottom: 15px;
+}
+
+.icome__title { color: #28B9B5; }
+.expenses__title { color: #FF5049; }
+
+.item {
+    display: flex;
+    justify-content: space-between;
+    padding: 13px;
+    border-bottom: 1px solid #e7e7e7;
+}
+
+.item__value {
+    transition: transform 0.3s;
+}
+
+.item__percentage {
+    margin-left: 20px;
+    transition: transform 0.3s;
+    font-size: 11px;
+    background-color: #FFDAD9;
+    padding: 3px;
+    border-radius: 3px;
+    width: 32px;
+    text-align: center;
+}
+
+.income .item__value,
+.income .item__delete--btn {
+    color: #28B9B5;
+}
+
+.expenses .item__value,
+.expenses .item__percentage,
+.expenses .item__delete--btn {
+    color: #FF5049;
+}
+
+.item__delete--btn {
+    font-size: 22px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    display: none;
+}
+
+.item__delete--btn:active { transform: translateY(2px); }
+
+.item:hover .item__delete--btn { display: block; }
+.item:hover .item__value { transform: translateX(-20px); }
+.item:hover .item__percentage { transform: translateX(-20px); }
+
+@media (max-width: 700px) {
+    .add__container,
+    .container-list {  
+        flex-direction: column;
+        align-items: center;    
+    }
+
+    .add__container {
+        padding: 20px 20px 10px;
+    }
+
+    .container-list {
+        margin-top: 40px;
+    }
+
+    .add__description { 
+        max-width: 400px;
+        margin: 10px;
+    }
+
+    .add__btn {
+        margin-top: 10px;
+        margin-left: 0;
+    }
+
+    .income,
+    .expenses {
+        width: 85%;
+    }
+
+    .income {
+        margin-right: 0;
+    }
+    
+    .expenses {
+        margin: 40px 20px;;
+    }
+}
+
