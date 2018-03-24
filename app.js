@@ -47,6 +47,9 @@ const budgetController = (()=> {
             data.allItems[type].push(newItem);
             return newItem;
         },
+        testing: ()=> {
+            console.log(data);
+        }
     };
     
     
@@ -69,7 +72,7 @@ const UIController = (()=> {
             return {
                 type: document.querySelector(DOMstrings.inputType).value,
                 description: document.querySelector(DOMstrings.inputDescription).value,
-                value: document.querySelector(DOMstrings.inputValue).value
+                value: parseFloat(document.querySelector(DOMstrings.inputValue).value)
             };           
         },
         addListItem: (obj, type)=> {
@@ -99,6 +102,14 @@ const UIController = (()=> {
             }
             document.querySelector(element).insertAdjacentHTML('beforeend', html);            
         },
+        clearFields: ()=> {
+            const fields = document.querySelectorAll(`${DOMstrings.inputDescription}, ${DOMstrings.inputValue}`);
+            const fieldsArr = Array.from(fields);
+            const field = fieldsArr.forEach( (el)=> {
+                el.value = '';
+            });
+            fieldsArr[0].focus();
+        },
         getDOMstrings: ()=> {
             return DOMstrings;
         }
@@ -114,7 +125,7 @@ const controller = ((budgetCtrl, UICtrl)=> {
 
         document.querySelector(DOM.addBtn).addEventListener('click', addItem);
 
-        document.querySelector(DOM.addBtn).addEventListener('keypress', (e)=> {
+        document.addEventListener('keypress', (e)=> {
             if(e.keyCode === 13 || e.which === 13 ) {
                 addItem();
             }
@@ -124,10 +135,15 @@ const controller = ((budgetCtrl, UICtrl)=> {
     const addItem = ()=> {
         // get the input field data
         const input = UICtrl.getInput();
-        // add the item to the budget controller
-        const newItem = budgetCtrl.addNewItem(input.type, input.description, input.value);
-        // add the item to the UI
-        UICtrl.addListItem(newItem, input.type);
+        
+        if (input.description !== '' && !isNaN(input.value) && input.value > 0) {
+            // add the item to the budget controller
+            const newItem = budgetCtrl.addNewItem(input.type, input.description, input.value);
+            // add the item to the UI
+            UICtrl.addListItem(newItem, input.type);
+            // clear the fields
+            UICtrl.clearFields();
+        }
 
     };
 
