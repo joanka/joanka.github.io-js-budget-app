@@ -24,7 +24,16 @@ const budgetController = (()=> {
         totals: {
             inc: 0,
             exp: 0
-        }
+        },
+        budget: 0,
+        percentage: -1
+    };
+
+    const calculateSum = (type)=> {
+        const sum = data.allItems[type].reduce( (prev, current)=> {
+            return prev + current.value;             
+        }, 0);
+        data.totals[type] = sum;
     };
 
     return {
@@ -46,6 +55,28 @@ const budgetController = (()=> {
             // push new item into data structure
             data.allItems[type].push(newItem);
             return newItem;
+        },
+        calculateBudget: ()=> {
+            // calculate all income and expenses
+            calculateSum('inc');
+            calculateSum('exp');
+            // calculate the budget
+            data.budget = data.totals.inc - data.totals.exp;
+            // calculate the percentage of income
+            if (data.totals.inc > 0) {
+                data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
+            } else {
+                data.percentage = -1;
+            }
+            
+        },
+        getBudget: ()=> {
+            return {
+                budget: data.budget,
+                totalInc: data.totals.inc,
+                totalExp: data.totals.exp,
+                persentage: data.percentage
+            };
         },
         testing: ()=> {
             console.log(data);
@@ -132,6 +163,16 @@ const controller = ((budgetCtrl, UICtrl)=> {
         });
     };
 
+    const updateBudget = ()=> {
+        // calculate the budget
+        budgetCtrl.calculateBudget();
+        // return the budget
+        const budget = budgetCtrl.getBudget();
+        // display the budget on the UI
+        console.log(budget);
+
+    };
+
     const addItem = ()=> {
         // get the input field data
         const input = UICtrl.getInput();
@@ -143,6 +184,8 @@ const controller = ((budgetCtrl, UICtrl)=> {
             UICtrl.addListItem(newItem, input.type);
             // clear the fields
             UICtrl.clearFields();
+            // update budget
+            updateBudget();
         }
 
     };
