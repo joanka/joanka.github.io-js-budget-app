@@ -133,7 +133,21 @@ const UIController = (()=> {
         expensesLabel: '.budget__expenses--value',
         percentageLabel: '.budget__expenses--percentage',
         container: '.container-list',
-        expPercentageLabel: '.item__percentage'
+        expPercentageLabel: '.item__percentage',
+        dateLabel: '.budget__title--month'
+    };
+
+    const formatNumber = (num, type)=> {
+        let splitNum, int, dec;
+        num = Math.abs(num).toFixed(2);
+        splitNum = num.split('.');
+        int = splitNum[0];
+        dec = splitNum[1];
+        
+        if (int.length > 3) {
+            int = `${int.substr(0, int.length - 3)},${int.substr(int.length - 3, 3)}`;
+        }
+        return `${(type === 'inc' ? '+' : '-')} ${int}.${dec}`;        
     };
 
     return {
@@ -152,7 +166,7 @@ const UIController = (()=> {
                 html = `<div class="item" id="inc-${obj.id}">
                 <div class="item__description">${obj.description}</div>
                 <div class="right">
-                    <div class="item__value">${obj.value}</div>
+                    <div class="item__value">${formatNumber(obj.value, 'inc')}</div>
                     <div class="item__delete">
                         <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
                     </div>
@@ -162,7 +176,7 @@ const UIController = (()=> {
                 html = `<div class="item" id="exp-${obj.id}">
                 <div class="item__description">${obj.description}</div>
                 <div class="right">
-                    <div class="item__value">${obj.value}</div>
+                    <div class="item__value">${formatNumber(obj.value, 'exp')}</div>
                     <div class="item__percentage">21%</div>
                     <div class="item__delete">
                         <button class="item__delete--btn"><i class="ion-ios-close-outline"></i></button>
@@ -184,9 +198,11 @@ const UIController = (()=> {
             fieldsArr[0].focus();
         },
         displayBudget: (obj)=> {
-            document.querySelector(DOMstrings.budgetLabel).textContent = obj.budget;
-            document.querySelector(DOMstrings.incomeLabel).textContent = obj.totalInc;
-            document.querySelector(DOMstrings.expensesLabel).textContent = obj.totalExp;
+            let type;
+            obj.budget > 0 ? type = 'inc' : type = 'exp';
+            document.querySelector(DOMstrings.budgetLabel).textContent = formatNumber(obj.budget, type);
+            document.querySelector(DOMstrings.incomeLabel).textContent = formatNumber(obj.totalInc, 'inc');
+            document.querySelector(DOMstrings.expensesLabel).textContent = formatNumber(obj.totalExp, 'exp');
             if(obj.percentage > 0) {
                 document.querySelector(DOMstrings.percentageLabel).textContent = `${obj.percentage}%`;
             } else {
@@ -204,6 +220,12 @@ const UIController = (()=> {
                     el.textContent = '---';
                 }                   
             });                      
+        },
+        displayDate: ()=> {
+            let currentYear = new Date().getFullYear(); 
+            let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+            let currentMonth = new Date().getMonth();                     
+            document.querySelector(DOMstrings.dateLabel).textContent = `${months[currentMonth]} ${currentYear}`;
         },
         getDOMstrings: ()=> {
             return DOMstrings;
@@ -282,8 +304,9 @@ const controller = ((budgetCtrl, UICtrl)=> {
 
     return {
         init: ()=> {
-            setupEvents();
+            UICtrl.displayDate();
             updateBudget();
+            setupEvents();                        
         }
     };
     
