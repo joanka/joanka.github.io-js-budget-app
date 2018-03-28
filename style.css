@@ -11,6 +11,15 @@ body {
     color: #555;
 }
 
+.add__btn.red {
+    color: #FF5049;
+}
+.add__type.red-focus:focus,
+.add__description.red-focus:focus,
+.add__value.red-focus:focus {
+    border: 1px solid #FF5049;
+}
+
 /* top part */
 .top {    
     height: 40vh;
