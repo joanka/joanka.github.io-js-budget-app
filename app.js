@@ -88,8 +88,7 @@ const budgetController = (()=> {
                 data.percentage = Math.round((data.totals.exp / data.totals.inc) * 100);
             } else {
                 data.percentage = -1;
-            }
-            
+            }            
         },
         getBudget: ()=> {
             return {
@@ -113,9 +112,7 @@ const budgetController = (()=> {
         testing: ()=> {
             console.log(data);
         }
-    };
-    
-    
+    };      
 })();
 
 
@@ -143,7 +140,7 @@ const UIController = (()=> {
         splitNum = num.split('.');
         int = splitNum[0];
         dec = splitNum[1];
-        
+
         if (int.length > 3) {
             int = `${int.substr(0, int.length - 3)},${int.substr(int.length - 3, 3)}`;
         }
@@ -227,11 +224,17 @@ const UIController = (()=> {
             let currentMonth = new Date().getMonth();                     
             document.querySelector(DOMstrings.dateLabel).textContent = `${months[currentMonth]} ${currentYear}`;
         },
+        changeIputBorder: ()=> {
+            const fields = document.querySelectorAll(`${DOMstrings.inputType},${DOMstrings.inputDescription},${DOMstrings.inputValue}`);
+            fields.forEach( (field)=> {
+                field.classList.toggle('red-focus');
+            });
+            document.querySelector(DOMstrings.addBtn).classList.toggle('red');
+        },
         getDOMstrings: ()=> {
             return DOMstrings;
         }
     };
-
 })();
 
 
@@ -249,6 +252,25 @@ const controller = ((budgetCtrl, UICtrl)=> {
         });
 
         document.querySelector(DOM.container).addEventListener('click', deleteItem);
+
+        document.querySelector(DOM.inputType).addEventListener('change', UICtrl.changeIputBorder);
+
+        const fields = document.querySelectorAll(`${DOM.inputType},${DOM.inputDescription},${DOM.inputValue}`);
+        fields.forEach( (field, index, array)=> {            
+            field.addEventListener('keydown', (e)=> {
+                if(e.keyCode === 39 || e.which === 39) {
+                    let nextInput = index + 1;                            
+                    if (nextInput < array.length) { 
+                        array[nextInput].focus();
+                    }
+                } else if (e.keyCode === 37 || e.which === 37) {
+                    let prevInput = index - 1;   
+                    if (prevInput >= 0) { 
+                        array[prevInput].focus();
+                    }
+                }
+            });            
+        });        
     };
 
     const updateBudget = ()=> {
@@ -308,8 +330,7 @@ const controller = ((budgetCtrl, UICtrl)=> {
             updateBudget();
             setupEvents();                        
         }
-    };
-    
+    };   
 
 })(budgetController, UIController);
 
